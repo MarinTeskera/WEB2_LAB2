@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { login, register } from "../helpers/auth";
+import { login, register, unsafeRegister } from "../helpers/auth";
 import { canLogIn } from "../helpers/canLogIn";
 
 const router = Router();
 
 router.get("/user", (req, res) => {
-  console.log(req.session.user);
   res.send(req.session.user);
 });
 
@@ -14,8 +13,8 @@ router.post("/register", async (req, res) => {
   try {
     const user = await register(username, password);
     req.session.user = user;
-    res.send(user);
-  } catch {
+    res.redirect("/");
+  } catch (err) {
     res.status(400).send("Something went wrong");
   }
 });
