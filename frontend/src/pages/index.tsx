@@ -38,11 +38,32 @@ const IndexPage: NextPage = () => {
       });
   };
 
+  const login = () => {
+    fetch("http://localhost:4200/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: "test", password: "test" }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+        return response;
+      })
+      .then((data) => {
+        console.log(data); // Handle the response data as needed
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   return (
     <>
       <div>Index Page</div>
       <Button onClick={fetchDataFromBackend}>button</Button>
       <Button onClick={register}>register</Button>
+      <Button onClick={login}>login</Button>
     </>
   );
 };
