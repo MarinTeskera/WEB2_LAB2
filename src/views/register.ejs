@@ -20,15 +20,18 @@
             </form>
     </nav>
 </header>
-<form action="/auth/register" method="post">
+<form action="/auth/register" method="post" class="form">
+  <div class="form-element">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required>
+  </div>
 
+  <div class="form-element">
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
+  </div>
 
-    <button type="submit">Register</button>
-    <a href="/login">Already have an account? Log in!</a>
+  <button type="submit" class="button-reverse form-element">Register</button>
 
 </form>
 </body>

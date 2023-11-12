@@ -20,26 +20,32 @@
             </form>
     </nav>
 </header>
-<form action="/auth/login" method="post">
+<form action="/auth/login" method="post" class="form">
+  <div class="form-element">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required>
+  </div>
 
+  <div class="form-element">
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
+  </div>
 
-    <button type="submit">Login</button>
+    <button type="submit" class="button-reverse form-element">Login</button>
 
-    <label>
-      <input type="checkbox" id="enableLoginAttack" name="enableLoginAttack">
-      Enable Login Attack
-  </label>
+    <div class="form-element">
+      <label>
+        <input type="checkbox" id="enableLoginAttack" name="enableLoginAttack">
+        Enable Login Attack
+      </label>
+    </div>
 
-  <label>
-      <input type="checkbox" id="enableInjection" name="enableInjection">
-      Enable Injection
-  </label>
-
-    <a href="/register">Don't have an account? Register!</a>
+    <div class="form-element">
+      <label>
+        <input type="checkbox" id="enableInjection" name="enableInjection">
+        Enable Injection
+      </label>
+    </div>
 </form>
 <script>
   // This script will handle the server's response and show an alert
