@@ -9,9 +9,8 @@ export const register = async (username: string, password: string) => {
 
   try {
     await db.query(query);
-    return username;
+    return { username: username };
   } catch (err) {
-    console.log("error", err);
     throw new Error("username already exists");
   }
 };
@@ -25,8 +24,13 @@ export const login = async (username: string, password: string) => {
 
   try {
     const user = await db.query(query);
+
+    if (user.rows.length === 0) {
+      throw new Error("username or password incorrect");
+    }
+
     return user.rows[0];
-  } catch {
+  } catch (error) {
     throw new Error("username or password incorrect");
   }
 };

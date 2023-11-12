@@ -11,7 +11,9 @@ const port = process.env.PORT || 3000;
 
 declare module "express-session" {
   export interface SessionData {
-    user: string;
+    user: { username: string };
+    loginAttempts: number;
+    lastLoginAttempt: number;
   }
 }
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
@@ -20,6 +22,8 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 app.use(cors());
@@ -34,7 +38,33 @@ app.use(
 app.use("/auth", authRoute);
 
 app.get("/", (req, res) => {
-  res.render("index");
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect("/login");
+  }
+
+  res.render("index", { username: user.username });
+});
+
+app.get("/login", (req, res) => {
+  const user = req.session.user;
+
+  if (user) {
+    return res.redirect("/");
+  }
+
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  const user = req.session.user;
+
+  if (user) {
+    return res.redirect("/");
+  }
+
+  res.render("register");
 });
 
 app.listen(port, () => {

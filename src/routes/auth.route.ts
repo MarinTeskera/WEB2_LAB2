@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { login, register } from "../helpers/auth";
+import { canLogIn } from "../helpers/canLogIn";
 
 const router = Router();
 
@@ -22,14 +23,24 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await login(username, password);
-    console.log(req.session.user);
-    req.session.user = user;
-    console.log(req.session.user);
+    if (!canLogIn(req.session)) {
+      return res.status(400).send("Too many login attempts");
+    }
 
-    res.send(user);
+    const user = await login(username, password);
+    req.session.user = user;
+    req.session.loginAttempts = 0;
+
+    return res.redirect("/");
   } catch {
-    res.status(400).send("Something went wrong");
+    if (req.session.loginAttempts) {
+      req.session.loginAttempts++;
+    } else {
+      req.session.loginAttempts = 1;
+    }
+
+    req.session.lastLoginAttempt = new Date().getTime();
+    res.redirect("/login");
   }
 });
 
@@ -38,7 +49,7 @@ router.post("/logout", (req, res) => {
     if (err) {
       res.status(500).send(err.message);
     } else {
-      res.status(200).send(void 0);
+      res.redirect("/login");
     }
   });
 });
