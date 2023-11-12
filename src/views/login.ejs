@@ -12,15 +12,12 @@
             <h1>Security app</h1>
         </a>
         <div class="button-container">
-          <form action="/unsecure/login" method="get">
-            <input type="submit" value="Go to unsecure version" class="button">
-        </form>
             <form action="/login" method="get">
-                  <input type="submit" value="Log in" class="button">
-              </form>
-              <form action="/register" method="get">
-                  <input type="submit" value="Register" class="button">
-              </form>
+                <input type="submit" value="Log in" class="button">
+            </form>
+            <form action="/register" method="get">
+                <input type="submit" value="Register" class="button">
+            </form>
     </nav>
 </header>
 <form action="/auth/login" method="post">
@@ -31,6 +28,23 @@
     <input type="password" id="password" name="password" required>
 
     <button type="submit">Login</button>
+
+    <label>
+      <input type="checkbox" id="enableLoginAttack" name="enableLoginAttack">
+      Enable Login Attack
+  </label>
+
+  <label>
+      <input type="checkbox" id="enableInjection" name="enableInjection">
+      Enable Injection
+  </label>
+
     <a href="/register">Don't have an account? Register!</a>
 </form>
+<script>
+  // This script will handle the server's response and show an alert
+  if ("<%= message %>") {
+      alert("Message data is: <%= message %>");
+  }
+</script>
 </body>

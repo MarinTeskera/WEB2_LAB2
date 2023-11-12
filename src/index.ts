@@ -5,8 +5,6 @@ import express from "express";
 import session from "express-session";
 import path from "path";
 import authRoute from "./routes/auth.route";
-import contentRoute from "./routes/content.route";
-import { getContent, unsafeGetContent } from "./helpers/content";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -38,32 +36,18 @@ app.use(
 );
 
 app.use("/auth", authRoute);
-app.use("/content", contentRoute);
 
 app.get("/", async (req, res) => {
-  const user = req.session.user;
-  const value = req.query.value || "";
-
-  if (!user) {
-    return res.redirect("/login");
-  }
-
-  const content: [{ value: string }] = await getContent(
-    user.username,
-    value as string
-  );
-
-  res.render("index", { username: user.username, content: content });
+  res.redirect("/login");
 });
 
 app.get("/login", (req, res) => {
   const user = req.session.user;
+  const message = req.query.message;
 
-  if (user) {
-    return res.redirect("/");
-  }
+  console.log(message);
 
-  res.render("login");
+  res.render("login", { message: message });
 });
 
 app.get("/register", (req, res) => {
@@ -74,42 +58,6 @@ app.get("/register", (req, res) => {
   }
 
   res.render("register");
-});
-
-app.get("/unsecure/", async (req, res) => {
-  const user = req.session.user;
-  const value = req.query.value || "";
-
-  if (!user) {
-    return res.redirect("/login");
-  }
-
-  const content: [{ value: string }] = await unsafeGetContent(
-    user.username,
-    value as string
-  );
-
-  res.render("unsecure/index", { username: user.username, content: content });
-});
-
-app.get("/unsecure/login", (req, res) => {
-  const user = req.session.user;
-
-  if (user) {
-    return res.redirect("/unsecure/");
-  }
-
-  res.render("unsecure/login");
-});
-
-app.get("/unsecure/register", (req, res) => {
-  const user = req.session.user;
-
-  if (user) {
-    return res.redirect("/unsecure/");
-  }
-
-  res.render("unsecure/register");
 });
 
 app.listen(port, () => {
