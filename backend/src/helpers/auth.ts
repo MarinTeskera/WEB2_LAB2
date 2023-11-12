@@ -5,12 +5,13 @@ export const register = async (username: string, password: string) => {
     throw new Error("username and password required");
   }
 
-  const query = `INSERT INTO users (username, password) VALUES (${username}, ${password}) RETURNING *`;
+  const query = `INSERT INTO account (username, password) VALUES ('${username}', '${password}')`;
 
   try {
     await db.query(query);
     return username;
-  } catch {
+  } catch (err) {
+    console.log("error", err);
     throw new Error("username already exists");
   }
 };
@@ -20,7 +21,7 @@ export const login = async (username: string, password: string) => {
     throw new Error("username and password required");
   }
 
-  const query = `SELECT username FROM users WHERE username = ${username} AND password = ${password}`;
+  const query = `SELECT username FROM account WHERE username = ${username} AND password = ${password}`;
 
   try {
     const user = await db.query(query);
