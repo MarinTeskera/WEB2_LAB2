@@ -18,10 +18,6 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
-    if (!canLogIn(req.session)) {
-      return res.status(400).send("Too many login attempts");
-    }
-
     const user = await unsafeLogin(username, password);
     req.session.user = user;
     req.session.loginAttempts = 0;
