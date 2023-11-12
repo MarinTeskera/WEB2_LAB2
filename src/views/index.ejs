@@ -31,6 +31,12 @@
         <input type="submit" value="Submit">
     </form>
 
+    <form action="/" method="get">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" name="value" placeholder="Enter search value">
+        <input type="submit" value="Search">
+    </form>
+
     <% for(let i of content) { %>
         <div><%= i.value %></div>
     <% } %>
