@@ -1,11 +1,14 @@
-const db = require("../db");
+const db = require("../../db/index");
 
 export const createContent = async (username: string, value: string) => {
   const query = `INSERT INTO content (username, value) VALUES ($1, $2)`;
 
+  console.log(query, username, value);
+
   try {
     return await db.query(query, [username, value]);
-  } catch {
+  } catch (err) {
+    console.log(err);
     throw new Error("Something went wrong");
   }
 };

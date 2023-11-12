@@ -5,6 +5,7 @@ import express from "express";
 import session from "express-session";
 import path from "path";
 import authRoute from "./routes/auth.route";
+import contentRoute from "./routes/content.route";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use(
 );
 
 app.use("/auth", authRoute);
+app.use("/content", contentRoute);
 
 app.get("/", (req, res) => {
   const user = req.session.user;
