@@ -24,13 +24,6 @@ router.post("/login", async (req, res) => {
 
     return res.redirect("/unsecure");
   } catch {
-    if (req.session.loginAttempts) {
-      req.session.loginAttempts++;
-    } else {
-      req.session.loginAttempts = 1;
-    }
-
-    req.session.lastLoginAttempt = new Date().getTime();
     res.redirect("/unsecure/login");
   }
 });

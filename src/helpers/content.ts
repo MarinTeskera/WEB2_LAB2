@@ -32,9 +32,9 @@ export const getContent = async (username: string, name: string) => {
 };
 
 export const unsafeGetContent = async (username: string, name: string) => {
-  const query = `SELECT value FROM content WHERE username = '${username}' AND value ILIKE '%${
-    name ? "|| ${name} ||" : ""
-  }%'`;
+  const query = `SELECT value FROM content WHERE username = '${username}' AND value ILIKE ${
+    name ? `'%' || '${name}' || '%'` : "'%'"
+  }`;
   console.log(query);
 
   try {
