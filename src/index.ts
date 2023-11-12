@@ -6,7 +6,7 @@ import session from "express-session";
 import path from "path";
 import authRoute from "./routes/auth.route";
 import contentRoute from "./routes/content.route";
-import { getContent } from "./helpers/content";
+import { getContent, unsafeGetContent } from "./helpers/content";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -76,14 +76,20 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
-app.get("/unsecure/", (req, res) => {
+app.get("/unsecure/", async (req, res) => {
   const user = req.session.user;
+  const value = req.query.value || "";
 
   if (!user) {
-    return res.redirect("/unsecure/login");
+    return res.redirect("/login");
   }
 
-  res.render("unsecure/index", { username: user.username });
+  const content: [{ value: string }] = await unsafeGetContent(
+    user.username,
+    value as string
+  );
+
+  res.render("unsecure/index", { username: user.username, content: content });
 });
 
 app.get("/unsecure/login", (req, res) => {

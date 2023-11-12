@@ -24,6 +24,15 @@
     </header>
 
     <h1>Hello <%=username%></h1>
-    <form action="/auth/logout" method="post"><button type="submit">Log out</button></form>
+
+    <form action="/content/unsecure/create" method="post">
+        <label for="value">Enter Text:</label>
+        <input type="text" id="value" name="value">
+        <input type="submit" value="Submit">
+    </form>
+
+    <% for(let i of content) { %>
+        <div><%= i.value %></div>
+    <% } %>
 </body>
 </html>

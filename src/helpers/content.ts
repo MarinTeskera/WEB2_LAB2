@@ -32,12 +32,16 @@ export const getContent = async (username: string, name: string) => {
 };
 
 export const unsafeGetContent = async (username: string, name: string) => {
-  const query = `SELECT value FROM content WHERE username = '${username}' AND value ILIKE '%' || ${name} || '%'`;
+  const query = `SELECT value FROM content WHERE username = '${username}' AND value ILIKE '%${
+    name ? "|| ${name} ||" : ""
+  }%'`;
+  console.log(query);
 
   try {
     const result = await db.query(query);
     return result.rows;
-  } catch {
+  } catch (err) {
+    console.log(err);
     throw new Error("Something went wrong");
   }
 };
