@@ -21,11 +21,11 @@ export const login = async (username: string, password: string) => {
     throw new Error("username and password required");
   }
 
-  const query = `SELECT username FROM account WHERE username = ${username} AND password = ${password}`;
+  const query = `SELECT username FROM account WHERE username = '${username}' AND password = '${password}'`;
 
   try {
     const user = await db.query(query);
-    return user[0];
+    return user.rows[0];
   } catch {
     throw new Error("username or password incorrect");
   }
