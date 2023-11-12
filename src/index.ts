@@ -42,10 +42,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  const user = req.session.user;
   const message = req.query.message;
-
-  console.log(message);
 
   res.render("login", { message: message });
 });

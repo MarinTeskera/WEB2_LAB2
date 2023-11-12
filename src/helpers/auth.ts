@@ -43,7 +43,6 @@ export const unsafeLogin = async (username: string, password: string) => {
   }
 
   const query = `SELECT * FROM account WHERE username = '${username}' AND password = '${password}'`;
-  console.log(query);
 
   try {
     const user = await db.query(query);
