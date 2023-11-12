@@ -36,7 +36,6 @@ export const login = async (username: string, password: string) => {
   }
 
   const query = `SELECT username FROM account WHERE username = $1 AND password = $2`;
-  console.log(query);
 
   try {
     const user = await db.query(query, [username, password]);

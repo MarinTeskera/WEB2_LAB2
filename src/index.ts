@@ -6,6 +6,7 @@ import session from "express-session";
 import path from "path";
 import authRoute from "./routes/auth.route";
 import contentRoute from "./routes/content.route";
+import { getContent } from "./helpers/content";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -39,14 +40,20 @@ app.use(
 app.use("/auth", authRoute);
 app.use("/content", contentRoute);
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   const user = req.session.user;
+  const value = req.query.value || "";
 
   if (!user) {
     return res.redirect("/login");
   }
 
-  res.render("index", { username: user.username });
+  const content: [{ value: string }] = await getContent(
+    user.username,
+    value as string
+  );
+
+  res.render("index", { username: user.username, content: content });
 });
 
 app.get("/login", (req, res) => {
