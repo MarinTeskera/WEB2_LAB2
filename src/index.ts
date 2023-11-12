@@ -67,6 +67,36 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+app.get("/unsecure/", (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect("/unsecure/login");
+  }
+
+  res.render("unsecure/index", { username: user.username });
+});
+
+app.get("/unsecure/login", (req, res) => {
+  const user = req.session.user;
+
+  if (user) {
+    return res.redirect("/unsecure/");
+  }
+
+  res.render("unsecure/login");
+});
+
+app.get("/unsecure/register", (req, res) => {
+  const user = req.session.user;
+
+  if (user) {
+    return res.redirect("/unsecure/");
+  }
+
+  res.render("unsecure/register");
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

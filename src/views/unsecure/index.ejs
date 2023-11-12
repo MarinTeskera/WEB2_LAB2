@@ -8,13 +8,13 @@
 
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" style="color: white; text-decoration: none;">
-                <h1>Security app</h1>
+        <nav class="navigation unsecure">
+            <a href="/unsecure" style="color: white; text-decoration: none;">
+                <h1>Security app (unsecure)</h1>
             </a>
             <div class="button-container">
-                <form action="/unsecure" method="get">
-                    <input type="submit" value="Go to unsecure version" class="button">
+                <form action="/" method="get">
+                    <input type="submit" value="Go to secure version" class="button">
                 </form>
                 <form action="/auth/logout" method="post">
                     <input type="submit" value="Logout" class="button">

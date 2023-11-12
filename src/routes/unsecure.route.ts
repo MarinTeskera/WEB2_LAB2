@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register, unsafeRegister } from "../helpers/auth";
+import { unsafeLogin, unsafeRegister } from "../helpers/auth";
 import { canLogIn } from "../helpers/canLogIn";
 
 const router = Router();
@@ -7,9 +7,9 @@ const router = Router();
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await register(username, password);
+    const user = await unsafeRegister(username, password);
     req.session.user = user;
-    res.redirect("/");
+    res.redirect("/unsecure");
   } catch (err) {
     res.status(400).send("Something went wrong");
   }
@@ -22,11 +22,11 @@ router.post("/login", async (req, res) => {
       return res.status(400).send("Too many login attempts");
     }
 
-    const user = await login(username, password);
+    const user = await unsafeLogin(username, password);
     req.session.user = user;
     req.session.loginAttempts = 0;
 
-    return res.redirect("/");
+    return res.redirect("/unsecure");
   } catch {
     if (req.session.loginAttempts) {
       req.session.loginAttempts++;
@@ -35,18 +35,8 @@ router.post("/login", async (req, res) => {
     }
 
     req.session.lastLoginAttempt = new Date().getTime();
-    res.redirect("/login");
+    res.redirect("/unsecure/login");
   }
-});
-
-router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      res.status(500).send(err.message);
-    } else {
-      res.redirect("/login");
-    }
-  });
 });
 
 export default router;
